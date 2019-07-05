@@ -1,7 +1,6 @@
 package com.shashankbhat.androidnotes.AsynkTasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.shashankbhat.androidnotes.MainActivity;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
@@ -37,7 +36,7 @@ public class DownloadAsyncTask extends AsyncTask<String, Void, String> {
                 data = inputStreamReader.read();
             }
 
-        }catch (Exception e){}
+        }catch (Exception ignored){}
         return result.toString();
     }
 
@@ -57,9 +56,7 @@ public class DownloadAsyncTask extends AsyncTask<String, Void, String> {
             }
             MainActivity.mHomeRecAdapter.notifyDataSetChanged();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        } catch (JSONException ignored) {}
         MainActivity.mHomeRecAdapter.notifyDataSetChanged();
     }
 }

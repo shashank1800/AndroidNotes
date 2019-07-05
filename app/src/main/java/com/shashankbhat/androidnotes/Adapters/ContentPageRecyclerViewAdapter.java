@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.androidnotes.Objects.PageContentObject;
-import com.shashankbhat.androidnotes.PageContent;
 import com.shashankbhat.androidnotes.R;
+import com.shashankbhat.androidnotes.ShowPage;
 
 import java.util.ArrayList;
 
@@ -25,6 +25,23 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
     public ContentPageRecyclerViewAdapter(Context context, ArrayList<PageContentObject> pageContentObjects) {
         this.context = context;
         this.pageContentObjects = pageContentObjects;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView textView ;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.textView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, ShowPage.class);
+            intent.putExtra("PAGE_TITLE","Toast");
+            intent.putExtra("PAGE_CONTENT_URL", pageContentObjects.get(getLayoutPosition()).getUrl());
+            context.startActivity(intent);
+        }
     }
 
     @NonNull
@@ -41,25 +58,6 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
 
     @Override
     public int getItemCount() {
-        if(pageContentObjects == null)
-            return 0;
-        else
-            return pageContentObjects.size();
+        return pageContentObjects == null ? 0 :pageContentObjects.size();
     }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView textView ;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView = itemView.findViewById(R.id.textView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(context, PageContent.class);
-            context.startActivity(intent);
-        }
-    }
-
 }

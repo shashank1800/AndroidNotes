@@ -2,6 +2,7 @@ package com.shashankbhat.androidnotes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.androidnotes.Adapters.ShowPageRecyclerViewAdapter;
-import com.shashankbhat.androidnotes.AsynkTasks.PageContentAsyncTask;
+import com.shashankbhat.androidnotes.AsynkTasks.ShowPageAsyncTask;
 import com.shashankbhat.androidnotes.Objects.ShowPageObject;
 
 import java.util.ArrayList;
@@ -23,28 +24,32 @@ public class ShowPage extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ShowPageRecyclerViewAdapter mShowPageRecyclerViewAdapter;
     public static ArrayList<ShowPageObject> showPageObjects;
-    private String url;
+    private String url,pageTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_page);
 
-        toolbar = findViewById(R.id.page_content_toolbar);
+        Intent intent = getIntent();
+        pageTitle = intent.getStringExtra("PAGE_TITLE");
+        url = intent.getStringExtra("PAGE_CONTENT_URL");
+
+        toolbar = findViewById(R.id.show_page_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(pageTitle);
 
         context = this;
-        url = getIntent().getStringExtra("STRING_URL");
 
         lLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
-        showPageRecyclerView = findViewById(R.id.pageContentRecyclerView);
+        showPageRecyclerView = findViewById(R.id.showPageRecyclerView);
         showPageRecyclerView.setHasFixedSize(true);
         showPageRecyclerView.setLayoutManager(lLayoutManager);
 
         showPageObjects = new ArrayList<>();
 
-        PageContentAsyncTask downloadData = new PageContentAsyncTask();
+        ShowPageAsyncTask downloadData = new ShowPageAsyncTask();
         downloadData.execute(url);
 
         mShowPageRecyclerViewAdapter = new ShowPageRecyclerViewAdapter(context,showPageObjects);

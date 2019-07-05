@@ -13,10 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".ShowPage"
-            android:label="@string/title_activity_show_page"></activity>
-        <activity android:name=".PageContent" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ShowPage"/>
+        <activity android:name=".PageContent" />
+
     </application>
 
 </manifest>

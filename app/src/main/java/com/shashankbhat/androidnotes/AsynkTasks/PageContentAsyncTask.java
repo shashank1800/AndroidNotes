@@ -1,8 +1,6 @@
 package com.shashankbhat.androidnotes.AsynkTasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
 import com.shashankbhat.androidnotes.Objects.PageContentObject;
 import com.shashankbhat.androidnotes.PageContent;
 
@@ -55,9 +53,7 @@ public class PageContentAsyncTask extends AsyncTask<String, Void, String> {
                 PageContent.pageContentObjects.add(new PageContentObject(heading,url));
             }
             PageContent.mPageContentRecAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        } catch (JSONException ignored) {}
 
     }
 }

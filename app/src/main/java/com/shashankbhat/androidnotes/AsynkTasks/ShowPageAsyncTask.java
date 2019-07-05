@@ -1,11 +1,10 @@
 package com.shashankbhat.androidnotes.AsynkTasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.shashankbhat.androidnotes.MainActivity;
-import com.shashankbhat.androidnotes.Objects.HomeObject;
-import com.shashankbhat.androidnotes.PageContent;
+import com.shashankbhat.androidnotes.Adapters.TextFileAsyncTask;
+import com.shashankbhat.androidnotes.Objects.ShowPageObject;
+import com.shashankbhat.androidnotes.ShowPage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,15 +46,19 @@ public class ShowPageAsyncTask extends AsyncTask<String, Void, String> {
 
         JSONObject json;
 
+        TextFileAsyncTask contentText = new TextFileAsyncTask();
+        contentText.execute();
+
         try {
             json = new JSONObject(result);
 
             for (int index=0;index<json.length();index++){
                 String heading = json.getJSONObject(String.valueOf(index)).getString("heading");
-                String url = json.getJSONObject(String.valueOf(index)).getString("url");
-                MainActivity.homeObjects.add(new HomeObject(heading,url));
+                String content = json.getJSONObject(String.valueOf(index)).getString("content");
+                String rawData = json.getJSONObject(String.valueOf(index)).getString("rawData");
+                ShowPage.showPageObjects.add(new ShowPageObject(heading,content,rawData));
             }
-            PageContent.mPageContentRecAdapter.notifyDataSetChanged();
+            ShowPage.mShowPageRecyclerViewAdapter.notifyDataSetChanged();
 
         } catch (JSONException e) {
             e.printStackTrace();

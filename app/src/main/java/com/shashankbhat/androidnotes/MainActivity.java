@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-
 import com.google.android.material.navigation.NavigationView;
 import com.shashankbhat.androidnotes.Adapters.HomeRecyclerViewAdapter;
 import com.shashankbhat.androidnotes.AsynkTasks.DownloadAsyncTask;
@@ -41,10 +40,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         context = this;
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(toggle);

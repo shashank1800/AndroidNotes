@@ -28,25 +28,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         this.homeObjects = homeObjects;
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_content, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(homeObjects.get(position).getName());
-    }
-
-    @Override
-    public int getItemCount() {
-        if(homeObjects == null)
-            return 0;
-        else
-            return homeObjects.size();
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView ;
@@ -62,5 +43,22 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             intent.putExtra("STRING_URL", MainActivity.homeObjects.get(getLayoutPosition()).getUrl());
             context.startActivity(intent);
         }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_content, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.textView.setText(homeObjects.get(position).getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return homeObjects == null ? 0 :homeObjects.size();
     }
 }

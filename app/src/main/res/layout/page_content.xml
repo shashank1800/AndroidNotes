@@ -14,8 +14,7 @@
             android:id="@+id/page_content_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/white"
-            app:title=""/>
+            app:titleTextColor="@color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

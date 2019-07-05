@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.shashankbhat.androidnotes.Objects.ShowPageObject;
 import com.shashankbhat.androidnotes.R;
 
@@ -47,14 +48,12 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titleText.setText(showPageObjects.get(position).getTitleText());
         holder.content.setText(showPageObjects.get(position).getContentUrl());
+        Glide.with(context).load(showPageObjects.get(position).getRawDataUrl()).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        if(showPageObjects == null)
-            return 0;
-        else
-            return showPageObjects.size();
+        return showPageObjects == null ? 0 : showPageObjects.size();
     }
 
 
