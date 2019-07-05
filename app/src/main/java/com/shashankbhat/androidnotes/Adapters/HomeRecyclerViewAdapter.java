@@ -11,18 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shashankbhat.androidnotes.MainActivity;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 import com.shashankbhat.androidnotes.PageContent;
 import com.shashankbhat.androidnotes.R;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>{
 
-    LinkedList<HomeObject> homeObjects;
-    Context context;
+    private ArrayList<HomeObject> homeObjects;
+    private Context context;
 
-    public HomeRecyclerViewAdapter(Context context, LinkedList<HomeObject> homeObjects) {
+    public HomeRecyclerViewAdapter(Context context, ArrayList<HomeObject> homeObjects) {
         this.context = context;
         this.homeObjects = homeObjects;
     }
@@ -49,7 +50,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView ;
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
             itemView.setOnClickListener(this);
@@ -58,8 +59,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, PageContent.class);
+            intent.putExtra("STRING_URL", MainActivity.homeObjects.get(getLayoutPosition()).getUrl());
             context.startActivity(intent);
         }
     }
-
 }

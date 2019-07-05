@@ -36,12 +36,12 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(pageContentObjects.get(position).getContentName());
+        holder.textView.setText(pageContentObjects.get(position).getHeading());
     }
 
     @Override
     public int getItemCount() {
-        if(pageContentObjects.size() ==0 || pageContentObjects.isEmpty())
+        if(pageContentObjects == null)
             return 0;
         else
             return pageContentObjects.size();

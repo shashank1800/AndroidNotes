@@ -1,15 +1,25 @@
 package com.shashankbhat.androidnotes.Objects;
 public class PageContentObject {
-    String contentName;
-    public PageContentObject(String contentName){
-        this.contentName = contentName;
+    private String heading,url;
+
+    public PageContentObject(String heading,String url){
+        this.heading = heading;
+        this.url = url;
     }
 
-    public String getContentName() {
-        return contentName;
+    public String getHeading() {
+        return heading;
     }
 
-    public void setContentName(String contentName) {
-        this.contentName = contentName;
+    public void setHeading(String heading) {
+        this.heading = heading;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

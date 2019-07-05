@@ -21,8 +21,7 @@ import com.shashankbhat.androidnotes.Adapters.HomeRecyclerViewAdapter;
 import com.shashankbhat.androidnotes.AsynkTasks.DownloadAsyncTask;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 
-import java.util.LinkedList;
-
+import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayoutManager lLayoutManager;
     @SuppressLint("StaticFieldLeak")
     public static HomeRecyclerViewAdapter mHomeRecAdapter;
-    public static LinkedList<HomeObject> homeObjects;
+    public static ArrayList<HomeObject> homeObjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mainRecyclerView.setLayoutManager(lLayoutManager);
 
-        homeObjects = new LinkedList<HomeObject>();
+        homeObjects = new ArrayList<>();
 
         DownloadAsyncTask downloadData = new DownloadAsyncTask();
-        downloadData.execute("https://raw.githubusercontent.com/shashank1800/Json/master/homeCard.json");
+        downloadData.execute("https://raw.githubusercontent.com/shashank1800/Android-Notes/master/HomePage.json");
 
         mHomeRecAdapter = new HomeRecyclerViewAdapter(context,homeObjects);
         mainRecyclerView.setAdapter(mHomeRecAdapter);
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id){
             case R.id.home_item1:
-                Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context," ",Toast.LENGTH_SHORT).show();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

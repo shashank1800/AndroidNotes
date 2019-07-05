@@ -1,10 +1,11 @@
 package com.shashankbhat.androidnotes.Objects;
 
 public class HomeObject {
-    public String name;
+    private String name,url;
 
-    public HomeObject(String name){
+    public HomeObject(String name,String url){
         this.name = name;
+        this.url = url;
     }
 
     public String getName() {
@@ -13,5 +14,13 @@ public class HomeObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

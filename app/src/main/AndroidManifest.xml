@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PageContent"></activity>
+        <activity
+            android:name=".ShowPage"
+            android:label="@string/title_activity_show_page"></activity>
+        <activity android:name=".PageContent" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

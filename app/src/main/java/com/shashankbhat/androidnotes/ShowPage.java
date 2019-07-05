@@ -1,36 +1,34 @@
 package com.shashankbhat.androidnotes;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.shashankbhat.androidnotes.Adapters.ContentPageRecyclerViewAdapter;
+import com.shashankbhat.androidnotes.Adapters.ShowPageRecyclerViewAdapter;
 import com.shashankbhat.androidnotes.AsynkTasks.PageContentAsyncTask;
-import com.shashankbhat.androidnotes.Objects.PageContentObject;
+import com.shashankbhat.androidnotes.Objects.ShowPageObject;
 
 import java.util.ArrayList;
 
-public class PageContent extends AppCompatActivity {
-
+public class ShowPage extends AppCompatActivity {
     private Toolbar toolbar;
     private Context context;
-    private RecyclerView pageContentRecyclerView;
+    private RecyclerView showPageRecyclerView;
     private LinearLayoutManager lLayoutManager;
     @SuppressLint("StaticFieldLeak")
-    public static ContentPageRecyclerViewAdapter mPageContentRecAdapter;
-    public static ArrayList<PageContentObject> pageContentObjects;
+    public static ShowPageRecyclerViewAdapter mShowPageRecyclerViewAdapter;
+    public static ArrayList<ShowPageObject> showPageObjects;
     private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_content);
+        setContentView(R.layout.show_page);
 
         toolbar = findViewById(R.id.page_content_toolbar);
         setSupportActionBar(toolbar);
@@ -40,16 +38,17 @@ public class PageContent extends AppCompatActivity {
 
         lLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
-        pageContentRecyclerView = findViewById(R.id.pageContentRecyclerView);
-        pageContentRecyclerView.setHasFixedSize(true);
-        pageContentRecyclerView.setLayoutManager(lLayoutManager);
+        showPageRecyclerView = findViewById(R.id.pageContentRecyclerView);
+        showPageRecyclerView.setHasFixedSize(true);
+        showPageRecyclerView.setLayoutManager(lLayoutManager);
 
-        pageContentObjects = new ArrayList<>();
+        showPageObjects = new ArrayList<>();
 
         PageContentAsyncTask downloadData = new PageContentAsyncTask();
         downloadData.execute(url);
 
-        mPageContentRecAdapter = new ContentPageRecyclerViewAdapter(context,pageContentObjects);
-        pageContentRecyclerView.setAdapter(mPageContentRecAdapter);
+        mShowPageRecyclerViewAdapter = new ShowPageRecyclerViewAdapter(context,showPageObjects);
+        showPageRecyclerView.setAdapter(mShowPageRecyclerViewAdapter);
     }
+
 }

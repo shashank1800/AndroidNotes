@@ -9,7 +9,7 @@ import com.shashankbhat.androidnotes.PageContent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,26 +18,25 @@ public class PageContentAsyncTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        StringBuilder result= new StringBuilder();
+        StringBuilder result = new StringBuilder();
         URL url;
         HttpURLConnection httpURLConnection;
-        InputStream inputStream;
         InputStreamReader inputStreamReader;
+        BufferedReader bufferedReader;
 
         try {
             url = new URL(params[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
-            inputStream = httpURLConnection.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
+            inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
+            bufferedReader = new BufferedReader(inputStreamReader);
 
-            int data = inputStream.read();
-            while (data!=-1){
-                char currentChar = (char)data;
-                result.append(currentChar);
-                data = inputStreamReader.read();
+            String line = "";
+            while (line != null){
+                line = bufferedReader.readLine();
+                result.append(line);
             }
 
-        }catch (Exception e){}
+        }catch (Exception ignored){}
         return result.toString();
     }
 
@@ -49,14 +48,13 @@ public class PageContentAsyncTask extends AsyncTask<String, Void, String> {
 
         try {
             json = new JSONObject(result);
-            Log.i("URl Conn" , String.valueOf(json.length()));
 
             for (int index=0;index<json.length();index++){
-                String dataString = json.getString(String.valueOf(index));
-                PageContent.pageContentObjects.add(new PageContentObject(dataString));
+                String heading = json.getJSONObject(String.valueOf(index)).getString("heading");
+                String url = json.getJSONObject(String.valueOf(index)).getString("url");
+                PageContent.pageContentObjects.add(new PageContentObject(heading,url));
             }
             PageContent.mPageContentRecAdapter.notifyDataSetChanged();
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
