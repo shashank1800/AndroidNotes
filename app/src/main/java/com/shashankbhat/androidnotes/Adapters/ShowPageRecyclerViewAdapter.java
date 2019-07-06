@@ -21,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import io.github.kbiakov.codeview.CodeView;
+
 public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<ShowPageObject> showPageObjects;
@@ -34,11 +36,13 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView titleText,content;
         ImageView imageView;
+        CodeView codeView;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.titleText);
             content = itemView.findViewById(R.id.content);
             imageView = itemView.findViewById(R.id.imageView);
+            codeView = itemView.findViewById(R.id.codeView);
         }
     }
 
@@ -52,9 +56,14 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titleText.setText(showPageObjects.get(position).getTitleText());
-        ReadText readText = new ReadText(holder.content);
+        ReadText readText = new ReadText(holder.content,null);
         readText.execute(showPageObjects.get(position).getContentUrl());
-        Glide.with(context).load(showPageObjects.get(position).getRawDataUrl()).into(holder.imageView);
+        if(showPageObjects.get(position).getRawDataUrl().endsWith(".txt")){
+            ReadText readCode = new ReadText(null,holder.codeView);
+            readCode.execute(showPageObjects.get(position).getRawDataUrl());
+        }
+        else
+            Glide.with(context).load(showPageObjects.get(position).getRawDataUrl()).into(holder.imageView);
     }
 
     @Override
@@ -65,9 +74,14 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
 
 class ReadText extends AsyncTask<String, Void, String>{
 
-    private TextView textView;
-    ReadText(TextView content) {
-        this.textView = content;
+    private TextView textVw;
+    private CodeView codeVw;
+    private boolean isCode = false;
+    ReadText(TextView content,CodeView codeVw) {
+        this.textVw = content;
+        this.codeVw = codeVw;
+        if(content == null)
+            isCode = true;
     }
 
     @Override
@@ -84,10 +98,10 @@ class ReadText extends AsyncTask<String, Void, String>{
             inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            String line = "";
+            String line = bufferedReader.readLine();
             while (line != null){
+                result.append(line).append("\n");
                 line = bufferedReader.readLine();
-                result.append(line);
             }
 
         }catch (Exception ignored){}
@@ -98,6 +112,9 @@ class ReadText extends AsyncTask<String, Void, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        textView.setText(s);
+        if(isCode)
+            codeVw.setCode(s);
+        else
+            textVw.setText(s);
     }
 }

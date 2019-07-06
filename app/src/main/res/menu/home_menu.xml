@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/home_item1" android:title="Title"/>
-    <item android:id="@+id/home_item2" android:title="Title"/>
-    <item android:id="@+id/home_item3" android:title="Title"/>
+    <item
+        android:id="@+id/nav_feedback_text"
+        android:icon="@drawable/ic_feedback"
+        android:title="@string/feedback" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="@string/about_developer" />
+    <item
+        android:id="@+id/rate_us"
+        android:icon="@drawable/ic_rate_us"
+        android:title="@string/rate_us" />
+    <item
+        android:id="@+id/nav_shareapp"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share_app"/>
 </menu>

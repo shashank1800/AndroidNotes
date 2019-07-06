@@ -1,8 +1,7 @@
-package com.shashankbhat.androidnotes.Adapters;
+package com.shashankbhat.androidnotes.AsynkTasks;
 
 import android.os.AsyncTask;
 
-import com.shashankbhat.androidnotes.AsynkTasks.ShowPageAsyncTask;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,10 +19,10 @@ public class TextFileAsyncTask extends AsyncTask<String, Void, Void> {
             InputStreamReader inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            String line = "";
+            String line = bufferedReader.readLine();
             while (line!=null){
-                line = bufferedReader.readLine();
                 texts.append(line);
+                line = bufferedReader.readLine();
             }
 
         } catch (Exception ignored) { }

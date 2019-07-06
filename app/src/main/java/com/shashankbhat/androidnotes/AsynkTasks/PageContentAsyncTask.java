@@ -28,10 +28,10 @@ public class PageContentAsyncTask extends AsyncTask<String, Void, String> {
             inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            String line = "";
+            String line = bufferedReader.readLine();
             while (line != null){
-                line = bufferedReader.readLine();
                 result.append(line);
+                line = bufferedReader.readLine();
             }
 
         }catch (Exception ignored){}

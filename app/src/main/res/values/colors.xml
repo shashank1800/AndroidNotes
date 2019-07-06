@@ -7,4 +7,5 @@
     <color name="homeContentTextColor">#3F51B5</color>
     <color name="tittleColor">#2196F3</color>
     <color name="contentTextColor">#3F38BE</color>
+    <color name="orange">#FF5722</color>
 </resources>

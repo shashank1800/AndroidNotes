@@ -47,7 +47,7 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_content, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_page_content, parent, false);
         return new ViewHolder(view);
     }
 

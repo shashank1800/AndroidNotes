@@ -3,14 +3,18 @@ package com.shashankbhat.androidnotes.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.shashankbhat.androidnotes.MainActivity;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 import com.shashankbhat.androidnotes.PageContent;
@@ -30,10 +34,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView textView ;
+        TextView textView;
+        ImageView iconImage;
+        CardView background;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
+            iconImage = itemView.findViewById(R.id.iconImage);
+            background = itemView.findViewById(R.id.background);
             itemView.setOnClickListener(this);
         }
 
@@ -54,7 +63,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(homeObjects.get(position).getName());
+        holder.background.setCardBackgroundColor(Color.parseColor(homeObjects.get(position).getBackground()));
+        holder.textView.setText(homeObjects.get(position).getHeading());
+        Glide.with(context).load(homeObjects.get(position).getIconUrl()).into(holder.iconImage);
     }
 
     @Override
