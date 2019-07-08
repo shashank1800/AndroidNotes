@@ -1,5 +1,7 @@
 package com.shashankbhat.androidnotes.Adapters;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
 
     private ArrayList<PageContentObject> pageContentObjects;
     private Context context;
+    private int time = 500;
 
     public ContentPageRecyclerViewAdapter(Context context, ArrayList<PageContentObject> pageContentObjects) {
         this.context = context;
@@ -54,6 +57,23 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(pageContentObjects.get(position).getHeading());
+        animate(holder,time);
+        time +=300;
+    }
+
+    private void animate(RecyclerView.ViewHolder holder, int time){
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        ObjectAnimator xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_Y, 1000f, 0);
+        xTranslation.setDuration(time);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
+        alpha.setDuration(time);
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(holder.itemView, View.ROTATION_X, 50, 0);
+        rotate.setDuration(time);
+
+        animatorSet.playTogether(xTranslation,alpha,rotate);
+        animatorSet.setDuration(time);
+        animatorSet.start();
     }
 
     @Override

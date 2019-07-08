@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,6 +34,7 @@ import com.shashankbhat.androidnotes.AsynkTasks.DownloadAsyncTask;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 
 import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -97,15 +96,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, "Hey, I'am learning android with this great app. No ads and Free!! ");
                 intent.setType("text/plain");
-                final String appPackageName = getPackageName();
                 try {
-                    intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + appPackageName);
+                    intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + getPackageName());
                 } catch (ActivityNotFoundException ignored) { }
                 startActivity(intent);
                 break;
             case R.id.nav_about:
                 showAboutDevDialog();
                 break;
+            case R.id.rate_us:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showFeedbackDialog() {
         final ViewGroup viewGroup = findViewById(android.R.id.content);
-        final View dialogView = LayoutInflater.from(this).inflate(R.layout.activity_feedback, viewGroup, false);
+        final View dialogView = LayoutInflater.from(context).inflate(R.layout.activity_feedback, viewGroup, false);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Feedback");
         builder.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
             @Override
@@ -156,10 +156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showAboutDevDialog() {
         ViewGroup viewGroup = findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.activity_about_dev, viewGroup, false);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.activity_about_dev, viewGroup, false);
 
         ImageView dev_photo = dialogView.findViewById(R.id.photo);
-        Glide.with(this)
+        Glide.with(context)
                 .load(R.drawable.my_photo)
                 .apply(RequestOptions.circleCropTransform())
                 .into(dev_photo);

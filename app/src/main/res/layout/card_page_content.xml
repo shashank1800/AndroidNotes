@@ -12,7 +12,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="5dp"
-        app:cardBackgroundColor="@color/orange"
+        app:cardBackgroundColor="@color/green"
         android:elevation="6dp">
         <TextView
             android:id="@+id/textView"

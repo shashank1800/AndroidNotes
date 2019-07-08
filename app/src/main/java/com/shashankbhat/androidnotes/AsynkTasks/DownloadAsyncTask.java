@@ -55,7 +55,6 @@ public class DownloadAsyncTask extends AsyncTask<String, Void, String> {
                 String background = json.getJSONObject(String.valueOf(index)).getString("background");
                 MainActivity.homeObjects.add(new HomeObject(heading,url,iconUrl,background));
             }
-            MainActivity.mHomeRecAdapter.notifyDataSetChanged();
 
         } catch (JSONException ignored) {}
         MainActivity.mHomeRecAdapter.notifyDataSetChanged();

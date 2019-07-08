@@ -1,5 +1,7 @@
 package com.shashankbhat.androidnotes.Adapters;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
 
     private ArrayList<ShowPageObject> showPageObjects;
     private Context context;
+    private int time=1000;
 
     public ShowPageRecyclerViewAdapter(Context context, ArrayList<ShowPageObject> showPageObjects) {
         this.context = context;
@@ -64,6 +67,21 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
         }
         else
             Glide.with(context).load(showPageObjects.get(position).getRawDataUrl()).into(holder.imageView);
+
+        animate(holder,time);
+        time +=300;
+
+    }
+
+    private void animate(RecyclerView.ViewHolder holder, int time){
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        ObjectAnimator xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_X, 2000f, 0);
+        xTranslation.setDuration(time);
+
+        animatorSet.playTogether(xTranslation);
+        animatorSet.setDuration(time);
+        animatorSet.start();
     }
 
     @Override

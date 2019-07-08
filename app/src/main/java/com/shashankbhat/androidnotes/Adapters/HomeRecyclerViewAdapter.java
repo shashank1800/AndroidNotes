@@ -1,6 +1,8 @@
 package com.shashankbhat.androidnotes.Adapters;
 
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +28,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     private ArrayList<HomeObject> homeObjects;
     private Context context;
+    public int time = 700;
 
     public HomeRecyclerViewAdapter(Context context, ArrayList<HomeObject> homeObjects) {
         this.context = context;
@@ -62,10 +65,26 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.background.setCardBackgroundColor(Color.parseColor(homeObjects.get(position).getBackground()));
         holder.textView.setText(homeObjects.get(position).getHeading());
         Glide.with(context).load(homeObjects.get(position).getIconUrl()).into(holder.iconImage);
+        animate(holder,time);
+        time +=100;
+    }
+
+    private void animate(RecyclerView.ViewHolder holder, int time){
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        ObjectAnimator xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_X, -1200f, 0);
+        xTranslation.setDuration(time);
+
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
+        alpha.setDuration(time);
+
+        animatorSet.playTogether(xTranslation,alpha);
+        animatorSet.setDuration(time);
+        animatorSet.start();
     }
 
     @Override

@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.shashankbhat.androidnotes.Adapters.ContentPageRecyclerViewAdapter;
 import com.shashankbhat.androidnotes.AsynkTasks.PageContentAsyncTask;
@@ -34,6 +32,7 @@ public class PageContent extends AppCompatActivity {
 
         toolbar = findViewById(R.id.page_content_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         context = this;
         url = getIntent().getStringExtra("STRING_URL");

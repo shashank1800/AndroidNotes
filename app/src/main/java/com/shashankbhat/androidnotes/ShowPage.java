@@ -37,6 +37,7 @@ public class ShowPage extends AppCompatActivity {
 
         toolbar = findViewById(R.id.show_page_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(pageTitle);
 
         context = this;

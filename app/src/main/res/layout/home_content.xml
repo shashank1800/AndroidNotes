@@ -4,6 +4,7 @@
     android:id="@+id/linearLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/backgroundColor"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,7 +13,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="60dp"
             app:titleTextColor="@color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.legacy.widget.Space
@@ -21,6 +22,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
