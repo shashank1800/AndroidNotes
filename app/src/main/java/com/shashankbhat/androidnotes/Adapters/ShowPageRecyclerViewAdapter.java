@@ -31,8 +31,7 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
     private Context context;
     private int time=1000;
 
-    public ShowPageRecyclerViewAdapter(Context context, ArrayList<ShowPageObject> showPageObjects) {
-        this.context = context;
+    public ShowPageRecyclerViewAdapter(ArrayList<ShowPageObject> showPageObjects) {
         this.showPageObjects = showPageObjects;
     }
 
@@ -52,21 +51,27 @@ public class ShowPageRecyclerViewAdapter extends RecyclerView.Adapter<ShowPageRe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_show_page, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(showPageObjects.get(position).getTitleText().compareTo("")==0)
+            holder.titleText.setVisibility(View.GONE);
         holder.titleText.setText(showPageObjects.get(position).getTitleText());
         ReadText readText = new ReadText(holder.content,null);
         readText.execute(showPageObjects.get(position).getContentUrl());
         if(showPageObjects.get(position).getRawDataUrl().endsWith(".txt")){
             ReadText readCode = new ReadText(null,holder.codeView);
             readCode.execute(showPageObjects.get(position).getRawDataUrl());
+            holder.imageView.setVisibility(View.GONE);
         }
-        else
+        else {
+            holder.codeView.setVisibility(View.GONE);
             Glide.with(context).load(showPageObjects.get(position).getRawDataUrl()).into(holder.imageView);
+        }
 
         animate(holder,time);
         time +=300;
@@ -100,6 +105,7 @@ class ReadText extends AsyncTask<String, Void, String>{
         this.codeVw = codeVw;
         if(content == null)
             isCode = true;
+
     }
 
     @Override

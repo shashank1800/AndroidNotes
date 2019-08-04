@@ -13,6 +13,7 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginTop="@dimen/dimen_5dp"
         android:layout_marginBottom="@dimen/dimen_5dp"
+        android:alpha="0.9"
         app:cardCornerRadius="8dp"
         android:elevation="8dp">
         <LinearLayout
@@ -31,7 +32,7 @@
                 android:textColor="@color/white"/>
             <ImageView
                 android:id="@+id/iconImage"
-                android:layout_width="100dp"
+                android:layout_width="100dp" android:contentDescription="TODO" 
                 android:layout_height="100dp"
                 android:alpha="0.9"
                 android:layout_marginTop="10dp"

@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView version = headerView.findViewById(R.id.version);
+        version.setText(BuildConfig.VERSION_NAME);
+
         mainRecyclerView =  findViewById(R.id.mainRecyclerView);
         mainRecyclerView.setHasFixedSize(true);
         lLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DownloadAsyncTask downloadData = new DownloadAsyncTask();
         downloadData.execute("https://raw.githubusercontent.com/shashank1800/Android-Notes/master/HomePage.json");
 
-        mHomeRecAdapter = new HomeRecyclerViewAdapter(context,homeObjects);
+        mHomeRecAdapter = new HomeRecyclerViewAdapter(homeObjects);
         mainRecyclerView.setAdapter(mHomeRecAdapter);
 
     }

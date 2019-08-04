@@ -3,9 +3,11 @@ package com.shashankbhat.androidnotes.Adapters;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,8 @@ import com.shashankbhat.androidnotes.MainActivity;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 import com.shashankbhat.androidnotes.PageContent;
 import com.shashankbhat.androidnotes.R;
+import com.shashankbhat.androidnotes.ShowPage;
+import com.shashankbhat.androidnotes.Utils.Constants;
 
 import java.util.ArrayList;
 
@@ -28,10 +32,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     private ArrayList<HomeObject> homeObjects;
     private Context context;
-    public int time = 700;
+    private int time = 700;
 
-    public HomeRecyclerViewAdapter(Context context, ArrayList<HomeObject> homeObjects) {
-        this.context = context;
+
+    public HomeRecyclerViewAdapter(ArrayList<HomeObject> homeObjects) {
         this.homeObjects = homeObjects;
     }
 
@@ -52,7 +56,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, PageContent.class);
-            intent.putExtra("STRING_URL", MainActivity.homeObjects.get(getLayoutPosition()).getUrl());
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.URL_STRING,homeObjects.get(getLayoutPosition()).getUrl());
+            bundle.putString(Constants.PAGE_TITLE, homeObjects.get(getLayoutPosition()).getHeading());
+            intent.putExtras(bundle);
             context.startActivity(intent);
         }
     }
@@ -60,6 +67,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_content, parent, false);
         return new ViewHolder(view);
     }
@@ -69,18 +77,29 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         holder.background.setCardBackgroundColor(Color.parseColor(homeObjects.get(position).getBackground()));
         holder.textView.setText(homeObjects.get(position).getHeading());
         Glide.with(context).load(homeObjects.get(position).getIconUrl()).into(holder.iconImage);
-        animate(holder,time);
+        animate(holder,time,position);
         time +=100;
     }
 
-    private void animate(RecyclerView.ViewHolder holder, int time){
+    private void animate(RecyclerView.ViewHolder holder, int time,int position){
         AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator xTranslation;
+        ObjectAnimator alpha;
+        if(position%2 ==0) {
 
-        ObjectAnimator xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_X, -1200f, 0);
-        xTranslation.setDuration(time);
+            xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_X, 1200f, 0);
+            xTranslation.setDuration(time);
 
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
-        alpha.setDuration(time);
+            alpha = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
+            alpha.setDuration(time);
+        }
+        else {
+            xTranslation = ObjectAnimator.ofFloat(holder.itemView, View.TRANSLATION_X, -1200f, 0);
+            xTranslation.setDuration(time);
+
+            alpha = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
+            alpha.setDuration(time);
+        }
 
         animatorSet.playTogether(xTranslation,alpha);
         animatorSet.setDuration(time);

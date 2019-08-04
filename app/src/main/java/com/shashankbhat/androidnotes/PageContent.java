@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.shashankbhat.androidnotes.Adapters.ContentPageRecyclerViewAdapter;
 import com.shashankbhat.androidnotes.AsynkTasks.PageContentAsyncTask;
 import com.shashankbhat.androidnotes.Objects.PageContentObject;
+import com.shashankbhat.androidnotes.Utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PageContent extends AppCompatActivity {
 
@@ -24,7 +27,7 @@ public class PageContent extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ContentPageRecyclerViewAdapter mPageContentRecAdapter;
     public static ArrayList<PageContentObject> pageContentObjects;
-    private String url;
+    private String url,pageTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +35,14 @@ public class PageContent extends AppCompatActivity {
 
         toolbar = findViewById(R.id.page_content_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         context = this;
-        url = getIntent().getStringExtra("STRING_URL");
+
+        Bundle bundle = getIntent().getExtras();
+        pageTitle = bundle.getString(Constants.PAGE_TITLE);
+        url = bundle.getString(Constants.URL_STRING);
+        getSupportActionBar().setTitle(pageTitle);
 
         lLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
@@ -48,7 +55,11 @@ public class PageContent extends AppCompatActivity {
         PageContentAsyncTask downloadData = new PageContentAsyncTask();
         downloadData.execute(url);
 
-        mPageContentRecAdapter = new ContentPageRecyclerViewAdapter(context,pageContentObjects);
+        mPageContentRecAdapter = new ContentPageRecyclerViewAdapter(pageContentObjects);
         pageContentRecyclerView.setAdapter(mPageContentRecAdapter);
+
+        if(url.isEmpty())
+            Toast.makeText(this,"Build in Progress",Toast.LENGTH_SHORT).show();
+
     }
 }

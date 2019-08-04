@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shashankbhat.androidnotes.Objects.PageContentObject;
 import com.shashankbhat.androidnotes.R;
 import com.shashankbhat.androidnotes.ShowPage;
+import com.shashankbhat.androidnotes.Utils.Constants;
 
 import java.util.ArrayList;
 
@@ -23,10 +25,9 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
 
     private ArrayList<PageContentObject> pageContentObjects;
     private Context context;
-    private int time = 500;
+    private int time = 700;
 
-    public ContentPageRecyclerViewAdapter(Context context, ArrayList<PageContentObject> pageContentObjects) {
-        this.context = context;
+    public ContentPageRecyclerViewAdapter(ArrayList<PageContentObject> pageContentObjects) {
         this.pageContentObjects = pageContentObjects;
     }
 
@@ -41,8 +42,10 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, ShowPage.class);
-            intent.putExtra("PAGE_TITLE","Toast");
-            intent.putExtra("PAGE_CONTENT_URL", pageContentObjects.get(getLayoutPosition()).getUrl());
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.PAGE_TITLE,pageContentObjects.get(getLayoutPosition()).getHeading());
+            bundle.putString(Constants.URL_STRING, pageContentObjects.get(getLayoutPosition()).getUrl());
+            intent.putExtras(bundle);
             context.startActivity(intent);
         }
     }
@@ -50,6 +53,7 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_page_content, parent, false);
         return new ViewHolder(view);
     }
@@ -58,7 +62,7 @@ public class ContentPageRecyclerViewAdapter extends RecyclerView.Adapter<Content
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(pageContentObjects.get(position).getHeading());
         animate(holder,time);
-        time +=300;
+        time +=100;
     }
 
     private void animate(RecyclerView.ViewHolder holder, int time){
