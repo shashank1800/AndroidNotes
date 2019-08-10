@@ -35,9 +35,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     private int time = 700;
 
 
-    public HomeRecyclerViewAdapter(ArrayList<HomeObject> homeObjects) {
-        this.homeObjects = homeObjects;
-    }
+//    public HomeRecyclerViewAdapter(ArrayList<HomeObject> homeObjects) {
+//        this.homeObjects = homeObjects;
+//    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -109,5 +109,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @Override
     public int getItemCount() {
         return homeObjects == null ? 0 :homeObjects.size();
+    }
+
+    public void setHomeObjects(ArrayList<HomeObject> homeObjects) {
+        this.homeObjects = homeObjects;
+        notifyDataSetChanged();
     }
 }

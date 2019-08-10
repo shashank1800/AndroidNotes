@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,11 +32,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.shashankbhat.androidnotes.Adapters.HomeRecyclerViewAdapter;
-import com.shashankbhat.androidnotes.AsynkTasks.DownloadAsyncTask;
 import com.shashankbhat.androidnotes.Objects.HomeObject;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("StaticFieldLeak")
     public static HomeRecyclerViewAdapter mHomeRecAdapter;
     public static ArrayList<HomeObject> homeObjects;
+    private FirebaseFirestore db;
+    private String urlOfThePage = "https://raw.githubusercontent.com/shashank1800/Android-Notes/master/HomePage.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +97,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainRecyclerView.setLayoutManager(lLayoutManager);
 
         homeObjects = new ArrayList<>();
-
-        DownloadAsyncTask downloadData = new DownloadAsyncTask();
-        downloadData.execute("https://raw.githubusercontent.com/shashank1800/Android-Notes/master/HomePage.json");
-
-        mHomeRecAdapter = new HomeRecyclerViewAdapter(homeObjects);
+        mHomeRecAdapter = new HomeRecyclerViewAdapter();
         mainRecyclerView.setAdapter(mHomeRecAdapter);
 
+        downloadAndAttachDataToRecyclerView();
+
+    }
+
+    private void downloadAndAttachDataToRecyclerView() {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(urlOfThePage)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull final Response response){
+                if(response.isSuccessful()){
+
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                String result  = response.body().string();
+                                JSONObject json;
+                                try {
+                                    json = new JSONObject(result);
+
+                                    for (int index=0;index<json.length();index++){
+                                        String heading = json.getJSONObject(String.valueOf(index)).getString("heading");
+                                        String url = json.getJSONObject(String.valueOf(index)).getString("url");
+                                        String iconUrl = json.getJSONObject(String.valueOf(index)).getString("icon_url");
+                                        String background = json.getJSONObject(String.valueOf(index)).getString("background");
+                                        MainActivity.homeObjects.add(new HomeObject(heading,url,iconUrl,background));
+                                    }
+
+                                } catch (JSONException ignored) {}
+                                mHomeRecAdapter.setHomeObjects(homeObjects);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -99,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_shareapp:
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, "Hey, I'am learning android with this great app. No ads and Free!! ");
+                intent.putExtra(Intent.EXTRA_TEXT, "Hey, I'am learning android with this great app. No ads android_notes Free!! ");
                 intent.setType("text/plain");
                 try {
                     intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + getPackageName());
@@ -139,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Snackbar.make(findViewById(R.id.linearLayout), "Please enter feedback text", Snackbar.LENGTH_SHORT).show();
                 else {
                     Snackbar.make(findViewById(R.id.linearLayout), "Thanks for your Feedback!", Snackbar.LENGTH_SHORT).show();
-                    /*String uniqueID = UUID.randomUUID().toString();
+                    String uniqueID = UUID.randomUUID().toString();
                     String feedbackText = feedback_text.getText().toString();
 
                     Map<String, Object> feedback = new HashMap<>();
@@ -149,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     db.collection("Feedback").document(uniqueID).set(feedback);
 
                     InputMethodManager keyboard = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    keyboard.hideSoftInputFromWindow(viewGroup.getWindowToken(), 0);*/
+                    keyboard.hideSoftInputFromWindow(viewGroup.getWindowToken(), 0);
                 }
             }
         });
@@ -236,4 +298,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         }
     }
+
 }

@@ -9,7 +9,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
@@ -22,14 +21,16 @@
         <activity android:name=".MainActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".ShowPage"
-            android:parentActivityName=".ShowPage">
+            android:parentActivityName=".ShowPage"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".PageContent"
-            android:parentActivityName=".PageContent">
+            android:parentActivityName=".PageContent"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
